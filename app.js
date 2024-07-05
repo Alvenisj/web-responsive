@@ -183,177 +183,194 @@ document.querySelector(".scroll-link").addEventListener("click", function (e) {
   });
 });
 
-(function () {
-  // Objeto para almacenar los valores del formulario
-  const email = {
-    name: "",
-    email: "",
-    message: "",
-  };
+document.addEventListener("DOMContentLoaded", function () {
+  (function () {
+    // Objeto para almacenar los valores del formulario
+    const email = {
+      nombre: "",
+      correo: "",
+      mensaje: "",
+    };
 
-  // Selección de elementos del DOM
-  const inputName = document.querySelector("#name");
-  const inputEmail = document.querySelector("#email");
-  const inputMessage = document.querySelector("#message");
-  const formulario = document.querySelector("#formulario-contacto");
-  const btnSubmit = formulario.querySelector('input[type="submit"]');
-  const btnReset = formulario.querySelector('input[type="reset"]');
-  const spinner = document.getElementById("spinner");
-  const mensajeEnviado = document.getElementById("mensaje-enviado");
+    // Selección de elementos del DOM
+    const inputName = document.querySelector("#nombre");
+    const inputEmail = document.querySelector("#correo");
+    const inputMessage = document.querySelector("#mensaje");
+    const formulario = document.querySelector("#formulario-contacto");
+    const btnSubmit = formulario.querySelector('input[type="submit"]');
+    const btnReset = formulario.querySelector('input[type="reset"]');
+    const spinner = document.getElementById("spinner");
+    const mensajeEnviado = document.getElementById("mensaje-enviado");
 
-  // Asignación de eventos
-  inputName.addEventListener("input", validar);
-  inputEmail.addEventListener("input", validar);
-  inputMessage.addEventListener("input", validar);
-  formulario.addEventListener("submit", enviarEmail);
-  btnReset.addEventListener("click", function (e) {
-    e.preventDefault();
-    resetFormulario();
-  });
-
-  // Función para validar los campos del formulario
-  function validar(e) {
-    if (e.target.value.trim() === "") {
-      mostrarAlerta(
-        `El campo ${e.target.id} es obligatorio`,
-        e.target.parentElement
-      );
-      email[e.target.id] = "";
-      comprobarEmail();
-      return;
-    }
-
-    if (e.target.id === "correo" && !validarEmail(e.target.value)) {
-      mostrarAlerta(
-        `El correo "${e.target.value}" no es válido`,
-        e.target.parentElement
-      );
-      email[e.target.id] = "";
-      comprobarEmail();
-      return;
-    }
-
-    limpiarAlerta(e.target.parentElement);
-    email[e.target.id] = e.target.value.trim().toLowerCase();
-    comprobarEmail();
-  }
-
-  // Función para enviar el formulario
-  function enviarEmail(e) {
-    e.preventDefault();
-    if (!validarFormulario()) {
-      return; // Si el formulario no es válido, no hacemos nada
-    }
-
-    // Mostrar spinner
-    spinner.classList.remove("hidden");
-    spinner.classList.add("showmeSpin");
-
-    setTimeout(() => {
-      // Ocultar spinner
-      spinner.classList.remove("showmeSpin");
-      spinner.classList.add("hidden");
+    // Asignación de eventos
+    inputName.addEventListener("input", validar);
+    inputEmail.addEventListener("input", validar);
+    inputMessage.addEventListener("input", validar);
+    formulario.addEventListener("submit", enviarEmail);
+    btnReset.addEventListener("click", function (e) {
+      e.preventDefault();
       resetFormulario();
+    });
 
-      // Mostrar mensaje de enviado correctamente
-      mensajeEnviado.classList.remove("hidden");
+    // Función para validar los campos del formulario
+    function validar(e) {
+      if (e.target.value.trim() === "") {
+        mostrarAlerta(
+          `El campo ${e.target.id} es obligatorio`,
+          e.target.parentElement
+        );
+        email[e.target.id] = "";
+        comprobarEmail();
+        return;
+      }
+
+      if (e.target.id === "correo" && !validarEmail(e.target.value)) {
+        mostrarAlerta(
+          `El correo "${e.target.value}" no es válido`,
+          e.target.parentElement
+        );
+        email[e.target.id] = "";
+        comprobarEmail();
+        return;
+      }
+
+      limpiarAlerta(e.target.parentElement);
+      email[e.target.id] = e.target.value.trim().toLowerCase();
+      comprobarEmail();
+    }
+
+    // Función para enviar el formulario
+    function enviarEmail(e) {
+      e.preventDefault();
+      if (!validarFormulario()) {
+        return; // Si el formulario no es válido, no hacemos nada
+      }
+
+      // Mostrar spinner
+      spinner.classList.remove("hidden");
+      spinner.classList.add("showmeSpin");
 
       setTimeout(() => {
-        // Ocultar mensaje después de 5 segundos
-        mensajeEnviado.classList.add("hidden");
-      }, 3000);
-    }, 3000); // Simular tiempo de carga (3 segundos)
-  }
+        // Ocultar spinner
+        spinner.classList.remove("showmeSpin");
+        spinner.classList.add("hidden");
 
-  // Función para validar el formato del correo electrónico
-  function validarEmail(email) {
-    const regex = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,10})+$/;
-    return regex.test(email);
-  }
+        // Mostrar mensaje de enviado correctamente
+        mensajeEnviado.classList.remove("hidden");
 
-  // Función para mostrar alertas de error
-  function mostrarAlerta(msg, referencia) {
-    limpiarAlerta(referencia);
+        setTimeout(() => {
+          // Ocultar mensaje después de 3 segundos
+          mensajeEnviado.classList.add("hidden");
 
-    const error = document.createElement("p");
-    error.textContent = msg;
-    error.classList.add(
-      "bg-red-600",
-      "text-white",
-      "p-2",
-      "text-center",
-      "rounded-lg"
-    );
+          // Obtener valores del formulario
+          const name = document.getElementById("nombre").value;
+          const email = document.getElementById("correo").value;
+          const message = document.getElementById("mensaje").value;
 
-    referencia.appendChild(error);
-  }
+          // Generar mensaje de WhatsApp
+          const mensajeWhatsApp = generarMensajeWhatsApp(name, email, message);
 
-  // Función para limpiar alertas de error
-  function limpiarAlerta(referencia) {
-    const alerta = referencia.querySelector(".bg-red-600");
-    if (alerta) {
-      alerta.remove();
-    }
-  }
+          // Crear enlace de WhatsApp
+          const numeroTelefono = "573232914082"; // Reemplaza con tu número de WhatsApp con el código de país
+          const urlWhatsApp = `https://wa.me/${numeroTelefono}?text=${encodeURIComponent(
+            mensajeWhatsApp
+          )}`;
 
-  // Función para comprobar si todos los campos del formulario están completos
-  function comprobarEmail() {
-    if (Object.values(email).includes("")) {
-      btnSubmit.classList.add("opacity-50");
-      btnSubmit.disabled = true;
-    } else {
-      btnSubmit.classList.remove("opacity-50");
-      btnSubmit.disabled = false;
-    }
-  }
+          // Abrir WhatsApp
+          window.open(urlWhatsApp, "_blank");
 
-  // Función para validar todo el formulario antes de enviar
-  function validarFormulario() {
-    let formValido = true;
-
-    if (inputName.value.trim() === "") {
-      mostrarAlerta(`El campo nombre es obligatorio`, inputName.parentElement);
-      formValido = false;
+          // Resetear formulario después de abrir WhatsApp
+          resetFormulario();
+        }, 3000); // Mostrar el mensaje de éxito durante 3 segundos
+      }, 4000); // Simular tiempo de carga (3 segundos)
     }
 
-    if (!validarEmail(inputEmail.value)) {
-      mostrarAlerta(
-        `El correo "${inputEmail.value}" no es válido`,
-        inputEmail.parentElement
+    // Función para validar el formato del correo electrónico
+    function validarEmail(email) {
+      const regex = /^\w+([.-]?\w+)*@\w+([.-]?\w+)*(\.\w{2,10})+$/;
+      return regex.test(email);
+    }
+
+    // Función para mostrar alertas de error
+    function mostrarAlerta(msg, referencia) {
+      limpiarAlerta(referencia);
+
+      const error = document.createElement("p");
+      error.textContent = msg;
+      error.classList.add(
+        "bg-red-600",
+        "text-white",
+        "p-2",
+        "text-center",
+        "rounded-lg"
       );
-      formValido = false;
+
+      referencia.appendChild(error);
     }
 
-    if (inputMessage.value.trim() === "") {
-      mostrarAlerta(
-        `El campo mensaje es obligatorio`,
-        inputMessage.parentElement
-      );
-      formValido = false;
+    // Función para limpiar alertas de error
+    function limpiarAlerta(referencia) {
+      const alerta = referencia.querySelector(".bg-red-600");
+      if (alerta) {
+        alerta.remove();
+      }
     }
 
-    if (
-      inputName.value.trim() === "" ||
-      inputEmail.value.trim() === "" ||
-      inputMessage.value.trim() === ""
-    ) {
-      mostrarAlerta(
-        `Debe llenar todos los campos del formulario`,
-        inputMessage.parentElement
-      );
-      formValido = false;
+    // Función para comprobar si todos los campos del formulario están completos
+    function comprobarEmail() {
+      if (Object.values(email).includes("")) {
+        btnSubmit.classList.add("opacity-50");
+        btnSubmit.disabled = true;
+      } else {
+        btnSubmit.classList.remove("opacity-50");
+        btnSubmit.disabled = false;
+      }
     }
 
-    return formValido;
-  }
+    // Función para validar todo el formulario antes de enviar
+    function validarFormulario() {
+      let formValido = true;
 
-  // Función para resetear el formulario
-  function resetFormulario() {
-    email.name = "";
-    email.email = "";
-    email.message = "";
+      if (inputName.value.trim() === "") {
+        mostrarAlerta(
+          `El campo nombre es obligatorio`,
+          inputName.parentElement
+        );
+        formValido = false;
+      }
 
-    formulario.reset();
-    comprobarEmail();
-  }
-})();
+      if (!validarEmail(inputEmail.value)) {
+        mostrarAlerta(
+          `El correo "${inputEmail.value}" no es válido`,
+          inputEmail.parentElement
+        );
+        formValido = false;
+      }
+
+      if (inputMessage.value.trim() === "") {
+        mostrarAlerta(
+          `El campo mensaje es obligatorio`,
+          inputMessage.parentElement
+        );
+        formValido = false;
+      }
+
+      return formValido;
+    }
+
+    // Función para resetear el formulario
+    function resetFormulario() {
+      email.nombre = "";
+      email.correo = "";
+      email.mensaje = "";
+
+      formulario.reset();
+      comprobarEmail();
+    }
+
+    // Función para formatear el mensaje de WhatsApp
+    function generarMensajeWhatsApp(name, email, message) {
+      return `Nombre: ${name}\nCorreo: ${email}\nMensaje: ${message}`;
+    }
+  })();
+});
