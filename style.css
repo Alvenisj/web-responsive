@@ -426,15 +426,9 @@ body {
   color: #2791f5;
 }
 
-/* ESTA CLASE SE AGREGA DINAMICAMENTE CUANDO HAYA SELECCIONADO UNA OPCIÓN*/
+/* ESTA CLASE SE AGREGA DINAMICAMENTE CUANDO HAYA SELECCIONADO UNA OPCIÓN */
 .borde {
-  border:  3px solid #01a801 !important;
-}
-
-.trabajos .galeria .item img {
-  width: 100%;
-  height: 100%;
-  display: block;
+  border: 3px solid #01a801 !important;
 }
 
 .trabajos .galeria {
@@ -448,7 +442,23 @@ body {
   overflow: hidden;
   border: 1px solid #8d8d8d;
   border-radius: 5px;
-  margin-bottom: 35px;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.trabajos .galeria .item:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.trabajos .galeria .item img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  transition: transform 0.3s ease;
+}
+
+.trabajos .galeria .item:hover img {
+  transform: scale(1.1);
 }
 
 .trabajos .galeria .item .info {
@@ -457,17 +467,21 @@ body {
   left: 0;
   bottom: 0;
   text-align: center;
-  background-color: #fff;
+  background-color: rgba(255, 255, 255, 0.9);
   width: 100%;
   padding: 20px;
   opacity: 0;
-  transition: .3s;
-  
+  transition: top 0.3s ease, opacity 0.3s ease;
+}
+
+.trabajos .galeria .item:hover .info {
+  opacity: 1;
+  top: 0;
 }
 
 .trabajos .galeria .item .info h3 {
-    color: #000;
-    margin-bottom: 20px;
+  color: #000;
+  margin-bottom: 20px;
 }
 
 .trabajos .galeria .item .info span {
@@ -476,7 +490,6 @@ body {
   border: 2px solid #8d8d8d;
   margin: 0 3px;
   padding: 0 5px;
-
 }
 
 .trabajos .galeria .item .info a {
@@ -486,10 +499,7 @@ body {
   color: #008cff;
 }
 
-.trabajos .galeria .item:hover .info {
-  opacity: 1;
-  top: 0;
-}
+
 
 
 /* SECCIÓN DE CONTACTO */
